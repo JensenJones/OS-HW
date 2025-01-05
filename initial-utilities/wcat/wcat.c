@@ -3,21 +3,24 @@
 //
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-
 
 int main(int argc, char *argv[]) {
-    FILE *file = fopen(argv[1], "r");
+    for (int i = 1; i < argc; ++i) {
+        FILE *file = fopen(argv[i], "r");
 
-    if (file == NULL) {
-        perror("Error opening file");
-        return EXIT_FAILURE;
+        if (file == NULL) {
+            printf("wcat: cannot open file\n");
+            exit(EXIT_FAILURE);
+        }
+
+        char line[1000];
+
+        while ((fgets(line, sizeof(line), file))) {
+            printf("%s", line);
+        }
+
+        fclose(file);
     }
 
-    char c;
-    while ((c = fgetc(file)) != EOF) {
-        printf("%c", c);
-    }
-
-    return 0;
+    exit(EXIT_SUCCESS);
 }
